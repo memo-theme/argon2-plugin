@@ -11,9 +11,16 @@ const options: MongoClientOptions = {
   appName: "devrel.vercel.integration",
   maxIdleTimeMS: 30000,
   maxPoolSize: 10,
-  serverSelectionTimeoutMS: 5000,
+  serverSelectionTimeoutMS: 15000,
 };
-const client = new MongoClient(uri, options);
+let client: MongoClient;
+try {
+  client = new MongoClient(uri, options);
+} catch (err) {
+  throw new Error(
+    `Failed to create MongoClient instance: ${err instanceof Error ? err.message : String(err)}`,
+  );
+}
 
 // Attach the client to ensure proper cleanup on function suspension
 attachDatabasePool(client);
