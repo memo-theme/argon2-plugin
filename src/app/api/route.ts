@@ -9,15 +9,9 @@ export async function POST(req: NextRequest) {
   try {
     const { slug, plaintext } = await req.json();
 
-    // Validate slug: must be non-empty string, only allow alphanumeric, dash, underscore
-    if (
-      typeof slug !== "string" ||
-      !slug.match(/^[\w-]+$/) ||
-      !slug ||
-      !plaintext
-    ) {
+    if (!slug || !plaintext) {
       return NextResponse.json(
-        { error: "Missing or invalid slug or plaintext" },
+        { error: "Missing slug or plaintext" },
         { status: 400 },
       );
     }
@@ -37,7 +31,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ verified: isValid });
   } catch (error) {
-    console.error("API Route Error:", error instanceof Error ? error.message : String(error));
+    console.error(error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 },
