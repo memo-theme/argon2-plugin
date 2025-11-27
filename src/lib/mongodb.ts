@@ -9,7 +9,9 @@ const uri = process.env.MONGODB_URI;
 
 const options: MongoClientOptions = {
   appName: "devrel.vercel.integration",
-  maxIdleTimeMS: 5000,
+  maxIdleTimeMS: 30000,
+  maxPoolSize: 10,
+  serverSelectionTimeoutMS: 5000,
 };
 const client = new MongoClient(uri, options);
 
