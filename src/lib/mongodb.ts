@@ -11,10 +11,20 @@ const options: MongoClientOptions = {
   appName: "devrel.vercel.integration",
   maxIdleTimeMS: 5000,
 };
-const client = new MongoClient(uri, options);
+let client: MongoClient | null = null;
+let clientPromise: Promise<MongoClient> | null = null;
 
-// Attach the client to ensure proper cleanup on function suspension
-attachDatabasePool(client);
-
-// Export a module-scoped MongoClient to ensure the client can be shared across functions.
-export default client;
+/**
+ * Returns a connected MongoClient (singleton) instance.
+ * Ensures the client is connected and attaches it to Vercel's pool.
+ */
+export async function getMongoClient(): Promise<MongoClient> {
+  if (!clientPromise) {
+    client = new MongoClient(uri, options);
+    clientPromise = client.connect().then((connectedClient) => {
+      attachDatabasePool(connectedClient);
+      return connectedClient;
+    });
+  }
+  return clientPromise;
+}
