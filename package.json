@@ -7,11 +7,7 @@
       "eslint",
       "prettier --write --ignore-unknown"
     ],
-    "*.css": [
-      "stylelint",
-      "prettier --write --ignore-unknown"
-    ],
-    "!(*.{js,mjs,cjs,ts,mts,cts,jsx,tsx,css})": [
+    "!(*.{js,mjs,cjs,ts,mts,cts,jsx,tsx})": [
       "prettier --write --ignore-unknown"
     ]
   },
@@ -23,6 +19,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@vercel/functions": "^3.3.4",
     "argon2": "^0.44.0",
     "jiti": "^2.6.1",
     "mongodb": "^7.0.0",
@@ -43,8 +40,6 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
     "prettier": "^3.7.1",
-    "stylelint": "^16.26.0",
-    "stylelint-config-standard": "^39.0.1",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.48.0"
   }
