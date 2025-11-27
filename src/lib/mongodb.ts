@@ -13,17 +13,18 @@ const options: MongoClientOptions = {
   maxPoolSize: 10,
   serverSelectionTimeoutMS: 15000,
 };
-let client: MongoClient;
-try {
-  client = new MongoClient(uri, options);
-} catch (err) {
-  throw new Error(
-    `Failed to create MongoClient instance: ${err instanceof Error ? err.message : String(err)}`,
-  );
-}
+const client = new MongoClient(uri, options);
 
 // Attach the client to ensure proper cleanup on function suspension
-attachDatabasePool(client);
+// If the client is not properly initialized or if attachDatabasePool fails,
+// an error will be thrown and the function will not be attached.
+try {
+  attachDatabasePool(client);
+} catch (err) {
+  throw new Error(
+    `Failed to attach database pool: ${err instanceof Error ? err.message : String(err)}`,
+  );
+}
 
 // Export a module-scoped MongoClient to ensure the client can be shared across functions.
 export default client;
