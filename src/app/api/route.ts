@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ verified: isValid });
   } catch (error) {
-    console.error(error);
+    console.error("API Route Error:", error instanceof Error ? error.message : String(error));
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 },
